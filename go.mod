@@ -6,6 +6,8 @@ require (
 	github.com/go-kit/kit v0.12.0
 	github.com/gorilla/mux v1.8.0
 	github.com/hashicorp/consul/api v1.10.1
+	google.golang.org/grpc v1.40.0
+	google.golang.org/protobuf v1.28.0
 )
 
 require (
@@ -27,5 +29,6 @@ require (
 	github.com/stretchr/testify v1.7.0 // indirect
 	golang.org/x/net v0.0.0-20220622184535-263ec571b305 // indirect
 	golang.org/x/sys v0.0.0-20220622161953-175b2fd9d664 // indirect
-	google.golang.org/protobuf v1.28.0 // indirect
+	golang.org/x/text v0.3.7 // indirect
+	google.golang.org/genproto v0.0.0-20210917145530-b395a37504d4 // indirect
 )

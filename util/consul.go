@@ -1,10 +1,13 @@
 package util
 
 import (
+	"encoding/json"
+	"errors"
 	"flag"
 	"strconv"
 
 	cApi "github.com/hashicorp/consul/api"
+	"kittest.com/def"
 )
 
 var client *cApi.Client
@@ -51,4 +54,13 @@ func RegistService() {
 
 func DeregistService() {
 	client.Agent().ServiceDeregister(*serviceId)
+}
+
+func Response(err bool, s string, data interface{}) (interface{}, error) {
+	r := def.FormatResponse{Err: err, Msg: s, Data: data}
+	if err {
+		j, _ := json.Marshal(r)
+		return data, errors.New(string(j))
+	}
+	return r, nil
 }

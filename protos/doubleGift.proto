@@ -15,3 +15,12 @@ message GetInfoRes {
 service GetInfoService{
     rpc GetInfo(GetInfoReq) returns (GetInfoRes);
 }
+
+
+message ExchangeReq {
+    int32 idx  = 1;
+}
+
+message ExchangeRes {
+    int32 gotten = 1;
+}

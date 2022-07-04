@@ -21,7 +21,9 @@ var c = make(chan os.Signal)
 
 func main() {
 	r := mux.NewRouter()
-	r.Handle("/activity/doublegift/info", khttp.NewServer(endp.GenGetInfoEndpoint(), mtsp.GetInfoDecodeRequest, mtsp.GetInfoEncodeResponse))
+	r.Handle("/activity/doublegift/info", khttp.NewServer(endp.GenGetInfoEndpoint(), mtsp.GetInfoDecodeRequest, mtsp.EncodeResponse))
+	r.Handle("/activity/doublegift/exchange", khttp.NewServer(endp.GenExchangeEndpoint(), mtsp.ExchangeDecodeRequest, mtsp.EncodeResponse))
+
 	r.HandleFunc("/activity/doublegift/health", func(w http.ResponseWriter, r *http.Request) {
 		s := services.DoubleGIftService{}
 		w.Header().Set("Content-type", "application/json")

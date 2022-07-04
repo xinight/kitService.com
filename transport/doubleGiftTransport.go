@@ -3,13 +3,30 @@ package mtsp
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"net/http"
+	"strconv"
+
+	"kittest.com/def"
+	"kittest.com/util"
 )
 
-func GetInfoDecodeRequest(c context.Context, w *http.Request) (request interface{}, err error) {
+func GetInfoDecodeRequest(c context.Context, r *http.Request) (request interface{}, err error) {
 	return nil, nil
 }
 
-func GetInfoEncodeResponse(c context.Context, w http.ResponseWriter, respose interface{}) error {
-	return json.NewEncoder(w).Encode(respose)
+func ExchangeDecodeRequest(c context.Context, r *http.Request) (request interface{}, err error) {
+	fmt.Println(r.URL.Query().Get("idx"))
+	if r.URL.Query().Get("idx") != "" {
+		idx, _ := strconv.Atoi(r.URL.Query().Get("idx"))
+		return def.ExchangeRequest{Index: idx}, nil
+	}
+	return util.Response(true, "参数错误", nil)
+}
+
+func EncodeResponse(c context.Context, w http.ResponseWriter, respose interface{}) error {
+	w.Header().Set("Content-type", "application/json")
+	res, err := util.Response(false, "success", respose)
+	json.NewEncoder(w).Encode(res)
+	return err
 }
