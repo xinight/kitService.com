@@ -1,9 +1,8 @@
-package mtsp
+package dtsp
 
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -16,7 +15,6 @@ func GetInfoDecodeRequest(c context.Context, r *http.Request) (request interface
 }
 
 func ExchangeDecodeRequest(c context.Context, r *http.Request) (request interface{}, err error) {
-	fmt.Println(r.URL.Query().Get("idx"))
 	if r.URL.Query().Get("idx") != "" {
 		idx, _ := strconv.Atoi(r.URL.Query().Get("idx"))
 		return def.ExchangeRequest{Index: idx}, nil

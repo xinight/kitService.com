@@ -13,6 +13,7 @@ import (
 var client *cApi.Client
 var serviceCfg cApi.AgentServiceRegistration
 
+var ServiceType = flag.Int("s", 1, "Input Service Type: 1-http 2-rpc others are wrong")
 var serviceId = flag.String("id", "", "Input Service Id")
 var serviceName = flag.String("name", "doubleGiftService", "Input Service Name")
 var serviceAddress = flag.String("address", "127.0.0.1", "Input Service Address")
@@ -29,20 +30,29 @@ func init() {
 	flag.Parse()
 }
 
-func RegistService() {
-
+func RegistService(t string) {
 	serviceCfg = cApi.AgentServiceRegistration{
 		ID:      *serviceId,
 		Name:    *serviceName,
 		Address: *serviceAddress,
 		Port:    *ServicePort,
-		Tags:    []string{"default"},
-		Check: &cApi.AgentServiceCheck{
+	}
+	if t == "http" {
+
+		serviceCfg.Tags = []string{"http"}
+		serviceCfg.Check = &cApi.AgentServiceCheck{
 			HTTP:     "http://" + *serviceAddress + ":" + strconv.Itoa(*ServicePort) + "/activity/doublegift/health",
 			Interval: "3s",
-		},
+			Timeout:  "1s",
+		}
+	} else if t == "rpc" {
+		serviceCfg.Tags = []string{"rpc"}
+		serviceCfg.Check = &cApi.AgentServiceCheck{
+			TCP:      *serviceAddress + ":" + strconv.Itoa(*ServicePort),
+			Timeout:  "1s",
+			Interval: "5s",
+		}
 	}
-
 	if serviceCfg.ID == "" {
 		panic("service id not input")
 	}

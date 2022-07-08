@@ -1,0 +1,28 @@
+syntax = "proto3";
+package message;
+option go_package="./;pb";
+
+message GetInfoReq {
+}
+
+message GetInfoRes {
+    int32 gold_num = 1;
+}
+
+service GetInfo {
+    rpc GetInfoRpc(GetInfoReq) returns (GetInfoRes);
+}
+
+
+message ExchangeReq {
+    int32 idx  = 1;
+}
+
+message ExchangeRes {
+    int32 gotten = 1;
+}
+
+//订单服务service定义
+service Exchange {
+    rpc ExchangeRpc(ExchangeReq) returns (ExchangeRes);
+}
