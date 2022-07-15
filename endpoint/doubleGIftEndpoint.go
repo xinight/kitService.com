@@ -12,7 +12,8 @@ import (
 func GenGetInfoEndpoint() endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		res := services.DoubleGIftService{}.GetInfo()
-		return def.GetInfoResponse{GoldNum: res}, nil
+		response = def.GetInfoResponse{GoldNum: res}
+		return response, nil
 	}
 }
 
@@ -23,6 +24,7 @@ func GenExchangeEndpoint() endpoint.Endpoint {
 		if res > services.EXCHANGE_SUCCESS {
 			return util.Response(true, services.ExchangeStatus[res], def.ExchangeRqsponse{})
 		}
-		return def.ExchangeRqsponse{Gotten: res}, nil
+		response = def.ExchangeRqsponse{Gotten: res}
+		return
 	}
 }

@@ -13,7 +13,7 @@ import (
 var client *cApi.Client
 var serviceCfg cApi.AgentServiceRegistration
 
-var ServiceType = flag.Int("s", 1, "Input Service Type: 1-http 2-rpc others are wrong")
+var ServiceType = flag.String("s", "http", "Input Service Type: 1-http 2-rpc others are wrong")
 var serviceId = flag.String("id", "", "Input Service Id")
 var serviceName = flag.String("name", "doubleGiftService", "Input Service Name")
 var serviceAddress = flag.String("address", "127.0.0.1", "Input Service Address")

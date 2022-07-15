@@ -24,20 +24,18 @@ var errChan = make(chan error)
 
 func main() {
 	t := *util.ServiceType
-	if t == 1 {
-		//http
-		httpRun()
-	} else if t == 2 {
+	if t == "rpc" {
 		//rpc
 		rpcRun()
 	} else {
-		panic("server type error:Input Service Type: 1-http 2-rpc others are wrong ")
+		//http
+		httpRun()
 	}
 	go func() {
 		signal.Notify(c, os.Interrupt, syscall.SIGTERM)
 		errChan <- fmt.Errorf("%s", <-c)
 	}()
-
+	fmt.Println("start")
 	e := <-errChan
 	util.DeregistService()
 	fmt.Println(e)

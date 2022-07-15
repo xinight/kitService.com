@@ -4,6 +4,7 @@ import (
 	"context"
 
 	kgrpc "github.com/go-kit/kit/transport/grpc"
+	"kittest.com/def"
 	endp "kittest.com/endpoint"
 	pb "kittest.com/pbs"
 	"kittest.com/util"
@@ -25,11 +26,13 @@ func GetInfoRpcDecodeRequest(c context.Context, gprcReq interface{}) (interface{
 }
 
 func GetInfoRpcEncodeResponse(c context.Context, res interface{}) (interface{}, error) {
-	r, ok := res.(*pb.GetInfoRes)
+	r, ok := res.(def.GetInfoResponse)
 	if !ok {
 		return util.Response(true, "GetInfoRpcEncodeResPonse 返回断言错误", nil)
 	}
-	return &pb.GetInfoRes{GoldNum: r.GoldNum}, nil
+	response := &pb.GetInfoRes{GoldNum: int32(r.GoldNum)}
+
+	return response, nil
 }
 
 func ExchangeRpcDecodeRequest(c context.Context, gprcReq interface{}) (interface{}, error) {
@@ -37,7 +40,10 @@ func ExchangeRpcDecodeRequest(c context.Context, gprcReq interface{}) (interface
 	if !ok {
 		return util.Response(true, "GetInfoRpcDecodeRequest 入参断言错误", nil)
 	}
-	return &pb.ExchangeReq{Idx: r.Idx}, nil
+	req := def.ExchangeRequest{
+		Index: int(r.Idx),
+	}
+	return req, nil
 }
 
 func ExchangeRpcEncodeResponse(c context.Context, res interface{}) (interface{}, error) {
@@ -45,7 +51,8 @@ func ExchangeRpcEncodeResponse(c context.Context, res interface{}) (interface{},
 	if !ok {
 		return util.Response(true, "GetInfoRpcEncodeResPonse 返回断言错误", nil)
 	}
-	return &pb.ExchangeRes{Gotten: r.Gotten}, nil
+	response := &pb.ExchangeRes{Gotten: r.Gotten}
+	return response, nil
 }
 
 func (d *doubleGiftRpc) GetInfoRpc(c context.Context, req *pb.GetInfoReq) (*pb.GetInfoRes, error) {
