@@ -38,7 +38,7 @@ func GetInfoRpcEncodeResponse(c context.Context, res interface{}) (interface{}, 
 func ExchangeRpcDecodeRequest(c context.Context, gprcReq interface{}) (interface{}, error) {
 	r, ok := gprcReq.(*pb.ExchangeReq)
 	if !ok {
-		return util.Response(true, "GetInfoRpcDecodeRequest 入参断言错误", nil)
+		return util.Response(true, "ExchangeRpcDecodeRequest 入参断言错误", nil)
 	}
 	req := def.ExchangeRequest{
 		Index: int(r.Idx),
@@ -47,11 +47,11 @@ func ExchangeRpcDecodeRequest(c context.Context, gprcReq interface{}) (interface
 }
 
 func ExchangeRpcEncodeResponse(c context.Context, res interface{}) (interface{}, error) {
-	r, ok := res.(*pb.ExchangeRes)
+	r, ok := res.(def.ExchangeRqsponse)
 	if !ok {
-		return util.Response(true, "GetInfoRpcEncodeResPonse 返回断言错误", nil)
+		return util.Response(true, "ExchangeRpcEncodeResponse 返回断言错误", nil)
 	}
-	response := &pb.ExchangeRes{Gotten: r.Gotten}
+	response := &pb.ExchangeRes{Gotten: int32(r.Gotten)}
 	return response, nil
 }
 

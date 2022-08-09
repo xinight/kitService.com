@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math/rand"
 	"net"
 	"net/http"
 	"os"
@@ -11,6 +12,7 @@ import (
 
 	khttp "github.com/go-kit/kit/transport/http"
 	"github.com/gorilla/mux"
+	"github.com/xinight/flog"
 	"google.golang.org/grpc"
 	endp "kittest.com/endpoint"
 	pb "kittest.com/pbs"
@@ -19,10 +21,35 @@ import (
 	"kittest.com/util"
 )
 
+func WeightedRandomIndex(weights []int32) int {
+	if len(weights) == 1 {
+		return 0
+	}
+	var sum int32 = 0
+	for _, w := range weights {
+		sum += w
+	}
+	r := rand.Int31n(sum)
+	var t int32 = 0
+	for i, w := range weights {
+		t += w
+		if t > r {
+			return i
+		}
+	}
+	return len(weights) - 1
+}
+
 var c = make(chan os.Signal)
 var errChan = make(chan error)
 
 func main() {
+
+	logger := flog.NewLogger("./log/", flog.OPEN_DEBUG|flog.OPEN_ERROR|flog.OPEN_FATAL, 100)
+	logger.Start()
+	err := logger.WriteLog(flog.L_DEBUG, "test")
+	fmt.Println(err)
+	defer logger.Close()
 	t := *util.ServiceType
 	if t == "rpc" {
 		//rpc
